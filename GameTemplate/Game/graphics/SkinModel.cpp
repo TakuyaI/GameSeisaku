@@ -12,7 +12,12 @@ SkinModel::~SkinModel()
 		//サンプラステートを解放。
 		m_samplerState->Release();
 	}
+	//ライト用の定数バッファの解放。
+	if (m_LightCb != nullptr) {
+		m_LightCb->Release();
+	}
 }
+
 void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 {
 	//スケルトンのデータを読み込む。
@@ -24,10 +29,18 @@ void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
 	//サンプラステートの初期化。
 	InitSamplerState();
 
+	//ディレクションライトの初期化。
+	InitDirectionLight();
+
 	//SkinModelDataManagerを使用してCMOファイルのロード。
 	m_modelDx = g_skinModelDataManager.Load(filePath, m_skeleton);
 
 	m_enFbxUpAxis = enFbxUpAxis;
+}
+void SkinModel::InitDirectionLight()
+{
+	m_dirLight.direction = { 1.0f, 0.0f, 0.0f, 0.0f };
+	m_dirLight.color = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 void SkinModel::InitSkeleton(const wchar_t* filePath)
 {

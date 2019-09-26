@@ -9,6 +9,12 @@ enum EnFbxUpAxis {
 	enFbxUpAxisY,		//Y-up
 	enFbxUpAxisZ,		//Z-up
 };
+//ディレクションライト。
+struct SDirectionLight {
+	CVector4 direction;
+	CVector4 color;
+};
+
 /*!
 *@brief	スキンモデルクラス。
 */
@@ -93,7 +99,10 @@ private:
 	*@param[in]	filePath		ロードするcmoファイルのファイルパス。
 	*/
 	void InitSkeleton(const wchar_t* filePath);
-	
+	/*
+	*@brief ディレクションライトの初期化。
+	*/
+	void InitDirectionLight();
 private:
 	//定数バッファ。
 	struct SVSConstantBuffer {
@@ -107,5 +116,7 @@ private:
 	CMatrix				m_worldMatrix;					//!<ワールド行列。
 	DirectX::Model*		m_modelDx;						//!<DirectXTKが提供するモデルクラス。
 	ID3D11SamplerState* m_samplerState = nullptr;		//!<サンプラステート。
+	SDirectionLight m_dirLight;                         //!ディレクションライト。
+	ID3D11Buffer* m_LightCb = nullptr;                  //!ライト用の定数バッファ。
 };
 
